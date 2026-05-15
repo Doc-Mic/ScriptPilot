@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.mic.scriptpilot.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_trendInput"
+            app:destination="@id/trendInputFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_idea"
+            app:destination="@id/ideaFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_script"
+            app:destination="@id/scriptFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_shorts"
+            app:destination="@id/shortsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_projects"
+            app:destination="@id/projectListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_seo"
+            app:destination="@id/seoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/trendInputFragment"
+        android:name="com.mic.scriptpilot.ui.trends.TrendInputFragment"
+        android:label="@string/title_trends"
+        tools:layout="@layout/fragment_trend_input">
+        <action
+            android:id="@+id/action_trendInput_to_results"
+            app:destination="@id/trendResultFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="category"
+                app:argType="integer" />
+            <argument
+                android:name="location"
+                app:argType="string" />
+            <argument
+                android:name="timeRange"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/trendResultFragment"
+        android:name="com.mic.scriptpilot.ui.trends.TrendResultFragment"
+        android:label="@string/title_trend_results"
+        tools:layout="@layout/fragment_trend_result">
+        <argument
+            android:name="category"
+            app:argType="integer" />
+        <argument
+            android:name="location"
+            app:argType="string" />
+        <argument
+            android:name="timeRange"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_trendResult_to_idea"
+            app:destination="@id/ideaFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="topic"
+                app:argType="string" />
+            <argument
+                android:name="trendCategory"
+                android:defaultValue=""
+                app:argType="string" />
+            <argument
+                android:name="trendVirality"
+                android:defaultValue="-1"
+                app:argType="integer" />
+            <argument
+                android:name="trendOpportunity"
+                android:defaultValue="-1"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/ideaFragment"
+        android:name="com.mic.scriptpilot.ui.idea.IdeaFragment"
+        android:label="@string/title_ideas"
+        tools:layout="@layout/fragment_idea">
+        <argument
+            android:name="topic"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="trendCategory"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="trendVirality"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="trendOpportunity"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_idea_to_script"
+            app:destination="@id/scriptFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="ideaText"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/scriptFragment"
+        android:name="com.mic.scriptpilot.ui.script.ScriptFragment"
+        android:label="@string/title_script"
+        tools:layout="@layout/fragment_script">
+        <argument
+            android:name="ideaText"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/shortsFragment"
+        android:name="com.mic.scriptpilot.ui.shorts.ShortsFragment"
+        android:label="@string/title_shorts"
+        tools:layout="@layout/fragment_shorts" />
+
+    <fragment
+        android:id="@+id/projectListFragment"
+        android:name="com.mic.scriptpilot.ui.projects.ProjectListFragment"
+        android:label="@string/title_projects"
+        tools:layout="@layout/fragment_project_list" />
+
+    <fragment
+        android:id="@+id/aiToolsFragment"
+        android:name="com.mic.scriptpilot.ui.aitools.AiToolsFragment"
+        android:label="@string/nav_ai_tools"
+        tools:layout="@layout/fragment_ai_tools">
+        <action
+            android:id="@+id/action_aiTools_to_trendInput"
+            app:destination="@id/trendInputFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_aiTools_to_idea"
+            app:destination="@id/ideaFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_aiTools_to_script"
+            app:destination="@id/scriptFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_aiTools_to_shorts"
+            app:destination="@id/shortsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_aiTools_to_seo"
+            app:destination="@id/seoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.mic.scriptpilot.ui.profile.ProfileFragment"
+        android:label="@string/nav_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/seoFragment"
+        android:name="com.mic.scriptpilot.ui.seo.SeoFragment"
+        android:label="@string/title_seo"
+        tools:layout="@layout/fragment_seo" />
+</navigation>

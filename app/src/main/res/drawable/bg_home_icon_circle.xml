@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:endColor="@color/sp_icon_circle_end"
+                android:startColor="@color/sp_icon_circle_start"
+                android:type="linear" />
+        </shape>
+    </item>
+</layer-list>

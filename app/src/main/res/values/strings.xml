@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ScriptPilot</string>
+
+    <string name="title_home">ScriptPilot</string>
+    <string name="title_trends">Trend discovery</string>
+    <string name="title_trend_results">Trending topics</string>
+    <string name="title_ideas">Idea generator</string>
+    <string name="title_script">Script studio</string>
+    <string name="title_shorts">Shorts mode</string>
+    <string name="title_projects">Saved projects</string>
+
+    <string name="home_tagline">Your AI co-pilot for YouTube</string>
+    <string name="home_section_actions">Workspace</string>
+    <string name="home_section_recent">Recent projects</string>
+
+    <string name="card_trends_title">Find Trends</string>
+    <string name="card_trends_subtitle">Spot what is heating up</string>
+    <string name="card_idea_title">Generate ideas</string>
+    <string name="card_idea_subtitle">Angles from any topic</string>
+    <string name="card_script_title">Create Script</string>
+    <string name="card_script_subtitle">Hook to outro structure</string>
+    <string name="card_shorts_title">Shorts Mode</string>
+    <string name="card_shorts_subtitle">60-second punchy beats</string>
+
+    <string name="label_category">Category</string>
+    <string name="label_location">Location</string>
+    <string name="label_time_range">Time range</string>
+    <string name="action_find_trends">Find trends</string>
+    <string name="error_trends_http_404">We couldn\'t find the trends service (HTTP 404). Check that the Firebase function \"findTrends\" is deployed and that the app uses the correct project and region.</string>
+    <string name="error_trends_http_server">The trends service is temporarily unavailable. Please try again in a moment.</string>
+    <string name="error_trends_http_generic">Could not load trends (HTTP %1$d). Please try again.</string>
+    <string name="error_trends_network">Couldn\'t reach the trends service. Check your internet connection and try again.</string>
+    <string name="error_unexpected_ai_response">We received an unexpected AI response. Please try again.</string>
+    <string name="trend_selected_category">Category</string>
+    <string name="trend_selected_category_chip_format">Category: %1$s</string>
+
+    <string name="label_topic">Topic</string>
+    <string name="hint_topic">e.g. morning routines for students</string>
+    <string name="label_style">Style</string>
+    <string name="action_generate_ideas">Generate ideas</string>
+    <string name="section_generated_ideas">Generated ideas</string>
+
+    <string name="label_idea">Idea</string>
+    <string name="hint_idea">Paste or refine your winning idea</string>
+    <string name="label_duration">Duration</string>
+    <string name="duration_three_min">3 min</string>
+    <string name="duration_five_min">5 min</string>
+    <string name="duration_ten_min">10 min</string>
+    <string name="duration_fifteen_min">15 min</string>
+    <string name="duration_custom">Custom</string>
+    <string name="label_custom_duration_minutes">Minutes</string>
+    <string name="hint_custom_duration_minutes">e.g. 20</string>
+    <string name="error_custom_duration_required">Enter a valid number of minutes for Custom.</string>
+    <string name="label_tone">Tone</string>
+    <string name="action_generate_script">Generate script</string>
+    <string name="section_hook">Hook</string>
+    <string name="section_intro">Intro</string>
+    <string name="section_body">Body</string>
+    <string name="section_outro">Outro</string>
+    <string name="action_save_project">Save</string>
+    <string name="message_project_saved">Project saved</string>
+
+    <string name="action_generate_shorts">Generate shorts script</string>
+
+    <string name="label_virality">Virality</string>
+    <string name="trend_metric_virality">Virality</string>
+    <string name="trend_metric_opportunity">Opportunity</string>
+    <string name="trend_metric_competition">Competition</string>
+    <string name="trend_empty_title">No signals yet</string>
+    <string name="trend_error_title">Something went wrong</string>
+    <string name="content_desc_trend_empty">No trends icon</string>
+    <string name="action_retry">Try again</string>
+    <string name="idea_trend_insight_banner">%1$s · Virality %2$d · Opportunity %3$d</string>
+    <string name="idea_trend_insight_hint">Imported from Trend intelligence</string>
+    <string name="trend_category_fallback">Selected niche</string>
+    <string name="empty_trends">We couldn\'t surface trends for these filters yet. Adjust category or timeframe and search again.</string>
+    <string name="empty_ideas">No ideas yet. Generate from your topic.</string>
+    <string name="empty_projects">No saved projects. Save a script to see it here.</string>
+    <string name="empty_recent">No recent projects yet</string>
+    <string name="title_home_dashboard">ScriptPilot</string>
+    <string name="home_greeting_subtitle">Ready to create today?</string>
+    <string name="home_greeting_morning">Good morning</string>
+    <string name="home_greeting_afternoon">Good afternoon</string>
+    <string name="home_greeting_evening">Good evening</string>
+    <string name="home_greeting_night">Hey there</string>
+    <string name="home_section_workspace_sub">AI workflows tuned for creators</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_projects">Projects</string>
+    <string name="nav_ai_tools">AI tools</string>
+    <string name="nav_profile">Profile</string>
+
+    <string name="label_ai_powered">AI powered</string>
+    <string name="label_trending">Trending</string>
+    <string name="label_fast">Fast</string>
+    <string name="label_creator_tool">Creator tool</string>
+
+    <string name="card_seo_title">SEO Assistant</string>
+    <string name="card_seo_subtitle">Generate titles, tags &amp; descriptions</string>
+
+    <string name="title_seo">SEO assistant</string>
+    <string name="seo_hint_script">Paste your script outline or narration draft</string>
+    <string name="seo_hint_title">Working title (optional)</string>
+    <string name="seo_hint_topic">Video topic summary</string>
+    <string name="seo_label_script">Script</string>
+    <string name="seo_label_title">Title</string>
+    <string name="seo_label_topic">Topic context</string>
+    <string name="action_generate_seo">Generate SEO pack</string>
+    <string name="action_regenerate_seo">Regenerate</string>
+    <string name="seo_tab_titles">Titles</string>
+    <string name="seo_tab_descriptions">Descriptions</string>
+    <string name="seo_tab_tags">Tags</string>
+    <string name="seo_empty_prompt">Paste a script or describe your topic to generate searchable packaging.</string>
+    <string name="seo_results_empty_tab">Nothing to show yet in this category.</string>
+    <string name="action_copy_item">Copy</string>
+    <string name="message_copied">Copied to clipboard</string>
+    <string name="content_desc_copy">Copy</string>
+
+    <string name="title_ai_tools_hub">Toolkit</string>
+    <string name="ai_tools_intro">Browse every creator workflow in one polished hub.</string>
+    <string name="title_profile">Account</string>
+    <string name="profile_banner">Premium workspace</string>
+    <string name="profile_body_summary">Manage your account, plan, and channel configuration.</string>
+    <string name="action_manage_account">Manage account</string>
+
+    <string name="empty_recent_title">Nothing in recents yet</string>
+    <string name="empty_recent_body">Start a workflow and your drafts will cascade here instantly.</string>
+    <string name="action_create_first_project">Create your first project</string>
+    <string name="action_view_all_projects">View all</string>
+    <string name="content_desc_empty_projects">No projects illustration</string>
+    <string name="layout_tools_greeting_preview">Good evening</string>
+
+    <string name="content_desc_navigate">Navigate</string>
+    <string name="content_desc_card_icon">Feature icon</string>
+
+    <string name="project_type_idea">Idea</string>
+    <string name="project_type_script">Script</string>
+    <string name="project_type_short">Short</string>
+</resources>

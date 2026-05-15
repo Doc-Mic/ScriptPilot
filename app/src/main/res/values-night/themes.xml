@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.ScriptPilot" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#A5B4FC</item>
+        <item name="colorOnPrimary">#1E1B4B</item>
+        <item name="colorPrimaryContainer">#312E81</item>
+        <item name="colorOnPrimaryContainer">#E0E7FF</item>
+        <item name="colorSecondary">#38BDF8</item>
+        <item name="colorOnSecondary">#0C4A6E</item>
+        <item name="colorSecondaryContainer">#075985</item>
+        <item name="colorOnSecondaryContainer">#E0F2FE</item>
+        <item name="android:colorBackground">#0F172A</item>
+        <item name="colorSurface">#0F172A</item>
+        <item name="colorOnSurface">#F8FAFC</item>
+        <item name="colorSurfaceVariant">#1E293B</item>
+        <item name="colorOnSurfaceVariant">#CBD5E1</item>
+        <item name="colorOutline">#64748B</item>
+        <item name="colorError">#F87171</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+    </style>
+
+    <style name="Theme.ScriptPilot" parent="Base.Theme.ScriptPilot" />
+</resources>

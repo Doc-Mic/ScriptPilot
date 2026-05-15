@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="seed">#4F46E5</color>
+    <color name="sp_primary">#4F46E5</color>
+    <color name="sp_on_primary">#FFFFFF</color>
+    <color name="sp_primary_container">#E0E7FF</color>
+    <color name="sp_on_primary_container">#1E1B4B</color>
+    <color name="sp_secondary">#0EA5E9</color>
+    <color name="sp_on_secondary">#FFFFFF</color>
+    <color name="sp_secondary_container">#E0F2FE</color>
+    <color name="sp_on_secondary_container">#0C4A6E</color>
+    <color name="sp_surface">#F8FAFC</color>
+    <color name="sp_on_surface">#0F172A</color>
+    <color name="sp_surface_variant">#E2E8F0</color>
+    <color name="sp_on_surface_variant">#475569</color>
+    <color name="sp_outline">#94A3B8</color>
+    <color name="sp_error">#DC2626</color>
+    <color name="sp_scrim">#66000000</color>
+
+    <color name="sp_icon_circle_start">#EEF2FF</color>
+    <color name="sp_icon_circle_end">#DDD6FE</color>
+    <color name="card_home_stroke">#1F4F46E5</color>
+    <color name="label_pill_bg">#1A4F46E5</color>
+    <color name="nav_bar_icon_inactive">#99475569</color>
+    <color name="nav_bar_item_ripple">#334F46E5</color>
+
+    <color name="trend_competition_low">#3320A36A</color>
+    <color name="trend_competition_medium">#3364748B</color>
+    <color name="trend_competition_high">#40DC2626</color>
+</resources>

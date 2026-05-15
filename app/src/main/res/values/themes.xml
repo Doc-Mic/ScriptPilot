@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.ScriptPilot" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/sp_primary</item>
+        <item name="colorOnPrimary">@color/sp_on_primary</item>
+        <item name="colorPrimaryContainer">@color/sp_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/sp_on_primary_container</item>
+        <item name="colorSecondary">@color/sp_secondary</item>
+        <item name="colorOnSecondary">@color/sp_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/sp_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/sp_on_secondary_container</item>
+        <item name="android:colorBackground">@color/sp_surface</item>
+        <item name="colorSurface">@color/sp_surface</item>
+        <item name="colorOnSurface">@color/sp_on_surface</item>
+        <item name="colorSurfaceVariant">@color/sp_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/sp_on_surface_variant</item>
+        <item name="colorOutline">@color/sp_outline</item>
+        <item name="colorError">@color/sp_error</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <style name="Theme.ScriptPilot" parent="Base.Theme.ScriptPilot" />
+
+    <style name="SpCardFeature" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">@dimen/card_corner</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="SpCardHomeFeature" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">@dimen/card_corner_large</item>
+        <item name="cardElevation">@dimen/home_card_elevation</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/card_home_stroke</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="SpBottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:minHeight">64dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="TextAppearance.ScriptPilot.ToolbarBrand" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.ScriptPilot.GreetingHeadline" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.ScriptPilot.BodyRelaxed" parent="TextAppearance.Material3.BodyLarge" />
+
+    <style name="TextAppearance.ScriptPilot.SectionTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="TextAppearance.ScriptPilot.CardTitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="SpLabelPill">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_label_pill</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.ScriptPilot.LabelPillText</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextAppearance.ScriptPilot.LabelPillText" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+</resources>
