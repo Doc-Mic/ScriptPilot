@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mic.scriptpilot.data.repository.ProjectRepository
+import com.mic.scriptpilot.data.repository.ProfilePreferencesRepository
 import com.mic.scriptpilot.data.repository.ScriptRepository
 import com.mic.scriptpilot.domain.model.Project
 import com.mic.scriptpilot.domain.model.ProjectType
@@ -29,6 +30,7 @@ data class ShortsUiState(
 class ShortsViewModel @Inject constructor(
     private val scriptRepository: ScriptRepository,
     private val projectRepository: ProjectRepository,
+    private val profilePreferencesRepository: ProfilePreferencesRepository,
     @ApplicationContext private val appContext: Context,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ShortsUiState())
@@ -40,6 +42,7 @@ class ShortsViewModel @Inject constructor(
             runCatching {
                 scriptRepository.generateShortScript(topic.trim())
             }.onSuccess { text ->
+                profilePreferencesRepository.incrementShortsGenerated()
                 _uiState.update {
                     ShortsUiState(loading = false, scriptText = text, errorMessage = null, saveComplete = false)
                 }

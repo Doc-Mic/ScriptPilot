@@ -12,8 +12,10 @@
     <dimen name="card_corner_large">20dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
     <dimen name="home_card_elevation">8dp</dimen>
-    <dimen name="home_card_min_height">120dp</dimen>
     <dimen name="spacing_dashboard_h">20dp</dimen>
+    <dimen name="screen_header_horizontal_padding">24dp</dimen>
+    <dimen name="screen_header_top_padding">16dp</dimen>
+    <dimen name="screen_header_back_size">48dp</dimen>
     <dimen name="empty_recent_illustration_size">108dp</dimen>
     <dimen name="recent_project_width">268dp</dimen>
     <dimen name="home_workspace_card_spacing">12dp</dimen>
@@ -23,4 +25,5 @@
     <dimen name="trend_card_corner_radius">22dp</dimen>
     <dimen name="trend_card_elevation">6dp</dimen>
     <dimen name="trend_progress_track">6dp</dimen>
+    <dimen name="premium_featured_stroke">2dp</dimen>
 </resources>

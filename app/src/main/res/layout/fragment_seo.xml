@@ -1,206 +1,362 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="@string/title_seo"
-        app:titleTextAppearance="@style/TextAppearance.ScriptPilot.ToolbarBrand" />
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/include_screen_header" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollContent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:fillViewport="false"
-        android:overScrollMode="never">
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="@dimen/spacing_md"
-            android:paddingTop="@dimen/spacing_md"
-            android:paddingBottom="@dimen/spacing_sm">
+            android:padding="@dimen/spacing_md"
+            android:paddingBottom="@dimen/spacing_lg">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.card.MaterialCardView
+                style="@style/SpCardFeature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:hint="@string/seo_label_script"
-                app:expandedHintEnabled="true"
-                app:placeholderText="@string/seo_hint_script"
-                app:placeholderTextColor="?attr/colorOnSurfaceVariant">
+                app:strokeColor="@color/card_home_stroke"
+                app:strokeWidth="1dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputScript"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="top|start"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:minHeight="@dimen/text_input_multiline_min_height"
-                    android:minLines="4"
-                    android:paddingTop="@dimen/text_input_edit_padding_vertical"
-                    android:paddingBottom="@dimen/text_input_edit_padding_vertical"
-                    android:scrollbars="vertical" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_md">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_md"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:hint="@string/seo_label_title"
-                app:expandedHintEnabled="true"
-                app:placeholderText="@string/seo_hint_title"
-                app:placeholderTextColor="?attr/colorOnSurfaceVariant">
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/seo_label_script"
+                        app:expandedHintEnabled="false"
+                        app:placeholderText="@string/seo_hint_script_or_topic"
+                        app:placeholderTextColor="?attr/colorOnSurfaceVariant">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
-                    android:minHeight="48dp"
-                    android:paddingTop="@dimen/text_input_edit_padding_vertical"
-                    android:paddingBottom="@dimen/text_input_edit_padding_vertical"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputScript"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:minHeight="@dimen/text_input_multiline_min_height"
+                            android:minLines="4"
+                            android:paddingTop="@dimen/text_input_edit_padding_vertical"
+                            android:paddingBottom="@dimen/text_input_edit_padding_vertical"
+                            android:scrollbars="vertical" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_md"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:hint="@string/seo_label_topic"
-                app:expandedHintEnabled="true"
-                app:placeholderText="@string/seo_hint_topic"
-                app:placeholderTextColor="?attr/colorOnSurfaceVariant">
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_md"
+                        android:hint="@string/seo_label_topic"
+                        app:expandedHintEnabled="false"
+                        app:placeholderText="@string/seo_hint_keywords"
+                        app:placeholderTextColor="?attr/colorOnSurfaceVariant">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputTopic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top|start"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:minHeight="@dimen/text_input_multiline_min_height"
-                    android:minLines="2"
-                    android:paddingTop="@dimen/text_input_edit_padding_vertical"
-                    android:paddingBottom="@dimen/text_input_edit_padding_vertical"
-                    android:scrollbars="vertical" />
-            </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputTopic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top|start"
+                            android:inputType="textCapSentences|textMultiLine"
+                            android:minHeight="88dp"
+                            android:minLines="2"
+                            android:paddingTop="@dimen/text_input_edit_padding_vertical"
+                            android:paddingBottom="@dimen/text_input_edit_padding_vertical"
+                            android:scrollbars="vertical" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_md"
+                        android:text="@string/label_creator_tool"
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        android:textColor="?attr/colorPrimary" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupContentTypes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_sm"
+                        app:singleSelection="false">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipYouTube"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="@string/seo_chip_youtube" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipShorts"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seo_chip_shorts" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipTutorial"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seo_chip_tutorial" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDocumentary"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seo_chip_documentary" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipGaming"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seo_chip_gaming" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipEducation"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seo_chip_education" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipTech"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seo_chip_tech" />
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_lg"
+                        app:cardBackgroundColor="@color/label_pill_bg"
+                        app:cardCornerRadius="@dimen/card_corner"
+                        app:cardElevation="0dp"
+                        app:strokeColor="@color/card_home_stroke"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_sm">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonGenerate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/action_generate_seo" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/spacing_sm"
+                                android:layout_marginTop="@dimen/spacing_xs"
+                                android:gravity="center"
+                                android:text="@string/seo_generate_subtitle"
+                                android:textAppearance="?attr/textAppearanceLabelMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/layoutResults"
+                style="@style/SpCardFeature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_lg"
-                android:orientation="vertical">
+                app:strokeColor="@color/card_home_stroke"
+                app:strokeWidth="1dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonGenerate"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_generate_seo" />
+                    android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonRegenerate"
-                    style="@style/Widget.Material3.Button.TonalButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/spacing_md"
-                    android:text="@string/action_regenerate_seo" />
-            </LinearLayout>
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/transparent"
+                        app:tabGravity="center"
+                        app:tabIndicatorColor="?attr/colorPrimary"
+                        app:tabIndicatorFullWidth="false"
+                        app:tabIndicatorHeight="4dp"
+                        app:tabMinWidth="112dp"
+                        app:tabMode="scrollable"
+                        app:tabRippleColor="?attr/colorPrimaryContainer"
+                        app:tabSelectedTextColor="?attr/colorPrimary"
+                        app:tabTextAppearance="@style/TextAppearance.Material3.LabelLarge"
+                        app:tabTextColor="?attr/colorOnSurfaceVariant">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seo_tab_titles" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seo_tab_descriptions" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seo_tab_tags" />
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutDescriptionEditor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_md"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/layoutSeoDescription"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/seo_tab_descriptions">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/inputSeoDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="top|start"
+                                android:inputType="textCapSentences|textMultiLine"
+                                android:minHeight="360dp"
+                                android:minLines="14"
+                                android:paddingTop="@dimen/text_input_edit_padding_vertical"
+                                android:paddingBottom="@dimen/text_input_edit_padding_vertical"
+                                android:scrollbars="vertical"
+                                tools:text="Generated long-form YouTube SEO description appears here and can be edited before copying or saving." />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerResults"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:nestedScrollingEnabled="false"
+                            android:padding="@dimen/spacing_md"
+                            android:visibility="gone"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="4"
+                            tools:listitem="@layout/item_seo_result"
+                            tools:visibility="visible" />
+
+                        <LinearLayout
+                            android:id="@+id/emptyState"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_xl"
+                            android:visibility="visible">
+
+                            <TextView
+                                android:layout_width="72dp"
+                                android:layout_height="72dp"
+                                android:alpha=".55"
+                                android:background="@drawable/bg_home_icon_circle"
+                                android:gravity="center"
+                                android:text="@string/seo_empty_icon"
+                                android:textAppearance="?attr/textAppearanceTitleLarge"
+                                android:textColor="?attr/colorPrimary"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textEmpty"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_md"
+                                android:gravity="center"
+                                android:text="@string/seo_empty_prompt"
+                                android:textAppearance="?attr/textAppearanceBodyLarge"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+                        </LinearLayout>
+
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            android:id="@+id/shimmerLoading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:padding="@dimen/spacing_md"
+                            android:visibility="gone"
+                            app:shimmer_base_alpha=".35"
+                            app:shimmer_duration="1200"
+                            tools:visibility="gone">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <include layout="@layout/include_seo_shimmer_row" />
+
+                                <include layout="@layout/include_seo_shimmer_row" />
+
+                                <include layout="@layout/include_seo_shimmer_row" />
+
+                                <include layout="@layout/include_seo_shimmer_row" />
+                            </LinearLayout>
+                        </com.facebook.shimmer.ShimmerFrameLayout>
+                    </FrameLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
+    <include
+        android:id="@+id/aiActionBar"
+        layout="@layout/include_ai_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_md"
-        android:layout_marginTop="@dimen/spacing_sm"
-        android:backgroundTint="@android:color/transparent"
-        app:tabGravity="fill"
-        app:tabMode="fixed"
-        app:tabIndicatorColor="?attr/colorPrimary"
-        app:tabRippleColor="?attr/colorPrimaryContainer"
-        app:tabSelectedTextColor="?attr/colorPrimary"
-        app:tabTextColor="?attr/colorOnSurfaceVariant">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/seo_tab_titles" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/seo_tab_descriptions" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/seo_tab_tags" />
-    </com.google.android.material.tabs.TabLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipChildren="false">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerResults"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:padding="@dimen/spacing_md"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_seo_result"
-            tools:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="@dimen/spacing_xl"
-            android:text="@string/seo_empty_prompt"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:visibility="visible" />
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmerLoading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:padding="@dimen/spacing_md"
-            android:visibility="gone"
-            app:shimmer_base_alpha=".35"
-            app:shimmer_duration="1200"
-            tools:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <include layout="@layout/include_seo_shimmer_row" />
-
-                <include layout="@layout/include_seo_shimmer_row" />
-
-                <include layout="@layout/include_seo_shimmer_row" />
-
-                <include layout="@layout/include_seo_shimmer_row" />
-            </LinearLayout>
-        </com.facebook.shimmer.ShimmerFrameLayout>
-    </FrameLayout>
-</LinearLayout>
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:visibility="gone"
+        tools:visibility="visible" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

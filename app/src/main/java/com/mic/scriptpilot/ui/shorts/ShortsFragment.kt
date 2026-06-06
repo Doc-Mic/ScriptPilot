@@ -11,11 +11,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.mic.scriptpilot.R
 import com.mic.scriptpilot.databinding.FragmentShortsBinding
-import com.mic.scriptpilot.ui.common.rootAppBarConfiguration
+import com.mic.scriptpilot.ui.common.AiActionBarConfig
+import com.mic.scriptpilot.ui.common.AiActionBarController
+import com.mic.scriptpilot.ui.common.applyNavigationBarBottomMargin
+import com.mic.scriptpilot.ui.common.navigateHomeClearingWorkflow
+import com.mic.scriptpilot.ui.common.reserveBottomOverlaySpace
+import com.mic.scriptpilot.ui.common.setupScreenHeader
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,6 +29,7 @@ class ShortsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ShortsViewModel by viewModels()
+    private var shortSaved = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentShortsBinding.inflate(inflater, container, false)
@@ -33,19 +38,22 @@ class ShortsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setupWithNavController(findNavController(), rootAppBarConfiguration())
+        val navController = findNavController()
+        binding.header.setupScreenHeader(
+            R.string.title_shorts,
+            showBack = true,
+            showHome = true,
+            onHome = { navController.navigateHomeClearingWorkflow() },
+        ) {
+            navController.navigateUp()
+        }
+        binding.aiActionBar.root.applyNavigationBarBottomMargin()
+        binding.scrollContent.reserveBottomOverlaySpace(binding.aiActionBar.root)
 
         binding.buttonGenerate.setOnClickListener {
             val topic = binding.inputTopic.text?.toString().orEmpty()
+            shortSaved = false
             viewModel.generate(topic)
-        }
-
-        binding.buttonSaveShort.setOnClickListener {
-            val topic = binding.inputTopic.text?.toString().orEmpty()
-            val script = binding.textOutput.text?.toString().orEmpty()
-            if (script.isNotBlank()) {
-                viewModel.save(topic, script)
-            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -56,12 +64,16 @@ class ShortsFragment : Fragment() {
 
                     val hasScript = !state.scriptText.isNullOrBlank()
                     binding.layoutShortsResult.isVisible = hasScript
+                    binding.aiActionBar.root.isVisible = hasScript
                     if (hasScript) {
                         binding.textOutput.text = state.scriptText.orEmpty()
+                        bindAiActions(state.scriptText.orEmpty())
                     }
 
                     if (state.saveComplete) {
-                        Snackbar.make(binding.root, R.string.message_project_saved, Snackbar.LENGTH_SHORT).show()
+                        shortSaved = true
+                        state.scriptText?.let { bindAiActions(it) }
+                        Snackbar.make(binding.root, R.string.ai_action_saved_projects, Snackbar.LENGTH_SHORT).show()
                         viewModel.consumeSaveEvent()
                     }
 
@@ -72,6 +84,27 @@ class ShortsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun bindAiActions(script: String) {
+        AiActionBarController.bind(
+            binding.aiActionBar,
+            AiActionBarConfig(
+                saved = shortSaved,
+                onCopy = { AiActionBarController.copyText(requireContext(), binding.root, script) },
+                onSave = {
+                    val topic = binding.inputTopic.text?.toString().orEmpty()
+                    viewModel.save(topic, script)
+                },
+                onFeedback = { AiActionBarController.showFeedbackDialog(requireContext(), binding.root) },
+                onShare = { AiActionBarController.shareText(requireContext(), binding.root, script) },
+                onRegenerate = {
+                    Snackbar.make(binding.root, R.string.ai_action_generating_new, Snackbar.LENGTH_SHORT).show()
+                    shortSaved = false
+                    viewModel.generate(binding.inputTopic.text?.toString().orEmpty())
+                },
+            ),
+        )
     }
 
     override fun onDestroyView() {

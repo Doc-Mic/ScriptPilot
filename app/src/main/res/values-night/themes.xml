@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <style name="Base.Theme.ScriptPilot" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">#A5B4FC</item>
         <item name="colorOnPrimary">#1E1B4B</item>
@@ -18,7 +18,7 @@
         <item name="colorError">#F87171</item>
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Theme.ScriptPilot" parent="Base.Theme.ScriptPilot" />

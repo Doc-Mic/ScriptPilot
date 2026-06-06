@@ -13,12 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mic.scriptpilot.R
 import com.mic.scriptpilot.databinding.FragmentTrendResultBinding
-import com.mic.scriptpilot.ui.common.rootAppBarConfiguration
+import com.mic.scriptpilot.ui.common.navigateHomeClearingWorkflow
+import com.mic.scriptpilot.ui.common.setupScreenHeader
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -48,9 +48,17 @@ class TrendResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setupWithNavController(findNavController(), rootAppBarConfiguration())
+        val navController = findNavController()
         val categoryLabel = TrendCategoryCatalog.labelFor(args.category)
-        binding.toolbar.subtitle = listOf(categoryLabel, args.location, args.timeRange).joinToString(" · ")
+        binding.header.setupScreenHeader(
+            getString(R.string.title_trend_results),
+            listOf(categoryLabel, args.location, args.timeRange).joinToString(" · "),
+            showBack = true,
+            showHome = true,
+            onHome = { navController.navigateHomeClearingWorkflow() },
+        ) {
+            navController.navigateUp()
+        }
 
         binding.recyclerTrends.layoutManager = LinearLayoutManager(requireContext())
         if (binding.recyclerTrends.layoutAnimation == null) {

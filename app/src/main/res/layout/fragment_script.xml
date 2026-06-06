@@ -3,25 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIconTint="?attr/colorOnSurface"
-            app:title="@string/title_script" />
+        <include
+            android:id="@+id/header"
+            layout="@layout/include_screen_header" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -36,8 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/label_idea"
-                app:expandedHintEnabled="true"
-                app:placeholderText="@string/hint_idea"
+                app:expandedHintEnabled="false"
+                app:placeholderText="@string/hint_script_idea"
                 app:placeholderTextColor="?attr/colorOnSurfaceVariant">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -106,30 +103,6 @@
             </com.google.android.material.chip.ChipGroup>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutCustomDuration"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_sm"
-                android:hint="@string/label_custom_duration_minutes"
-                android:visibility="gone"
-                app:expandedHintEnabled="true"
-                app:placeholderText="@string/hint_custom_duration_minutes"
-                app:placeholderTextColor="?attr/colorOnSurfaceVariant"
-                tools:visibility="visible">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputCustomMinutes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLength="3"
-                    android:minHeight="48dp"
-                    android:paddingTop="@dimen/text_input_edit_padding_vertical"
-                    android:paddingBottom="@dimen/text_input_edit_padding_vertical" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layoutTone"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
@@ -141,6 +114,7 @@
                     android:id="@+id/inputTone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/label_tone"
                     android:inputType="none"
                     android:minHeight="48dp"
                     android:paddingTop="@dimen/text_input_edit_padding_vertical"
@@ -179,86 +153,50 @@
                     android:orientation="vertical"
                     android:padding="@dimen/spacing_md">
 
-                    <TextView
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutGeneratedScript"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/section_hook"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
-                        android:textColor="?attr/colorPrimary" />
+                        android:hint="@string/script_generated_label"
+                        app:expandedHintEnabled="true"
+                        app:placeholderText="@string/script_generated_placeholder"
+                        app:placeholderTextColor="?attr/colorOnSurfaceVariant">
 
-                    <TextView
-                        android:id="@+id/textHook"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        tools:text="Hook copy" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputGeneratedScript"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top|start"
+                            android:inputType="textCapSentences|textMultiLine"
+                            android:minHeight="260dp"
+                            android:minLines="10"
+                            android:paddingTop="@dimen/text_input_edit_padding_vertical"
+                            android:paddingBottom="@dimen/text_input_edit_padding_vertical"
+                            android:scrollbars="vertical"
+                            tools:text="Hook:\nGenerated script appears here." />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonGenerateSeoPack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_md"
-                        android:text="@string/section_intro"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
-                        android:textColor="?attr/colorPrimary" />
-
-                    <TextView
-                        android:id="@+id/textIntro"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        tools:text="Intro copy" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_md"
-                        android:text="@string/section_body"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
-                        android:textColor="?attr/colorPrimary" />
-
-                    <TextView
-                        android:id="@+id/textBody"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        tools:text="Body copy" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_md"
-                        android:text="@string/section_outro"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
-                        android:textColor="?attr/colorPrimary" />
-
-                    <TextView
-                        android:id="@+id/textOutro"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        tools:text="Outro copy" />
+                        android:text="@string/action_generate_seo_pack"
+                        app:icon="@drawable/ic_rocket" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-            <LinearLayout
-                android:id="@+id/actionsRow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_md"
-                android:gravity="end"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonSave"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/action_save_project" />
-            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/aiActionBar"
+        layout="@layout/include_ai_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:visibility="gone"
+        tools:visibility="visible" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

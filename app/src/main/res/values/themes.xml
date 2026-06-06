@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <style name="Base.Theme.ScriptPilot" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/sp_primary</item>
         <item name="colorOnPrimary">@color/sp_on_primary</item>
@@ -18,7 +18,7 @@
         <item name="colorError">@color/sp_error</item>
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.ScriptPilot" parent="Base.Theme.ScriptPilot" />
@@ -52,6 +52,26 @@
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
+    <style name="TextAppearance.ScriptPilot.ScreenHeaderLarge" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.ScriptPilot.ScreenHeaderBack" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.ScriptPilot.ScreenSubtitle" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
     <style name="TextAppearance.ScriptPilot.GreetingHeadline" parent="TextAppearance.Material3.HeadlineLarge">
         <item name="android:textStyle">bold</item>
     </style>
@@ -83,5 +103,24 @@
 
     <style name="TextAppearance.ScriptPilot.LabelPillText" parent="TextAppearance.Material3.LabelMedium">
         <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="ProfileSettingsRowTitle" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="ProfileSettingsActionRow" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawablePadding">@dimen/spacing_sm</item>
+        <item name="android:drawableTint">?attr/colorOnSurfaceVariant</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 </resources>

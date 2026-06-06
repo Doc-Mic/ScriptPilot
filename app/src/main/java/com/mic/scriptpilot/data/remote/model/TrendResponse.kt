@@ -49,4 +49,16 @@ data class TrendItemResponse(
 
     @SerializedName("region")
     val region: String? = null,
+
+    @SerializedName("viewCount")
+    val viewCount: Long? = null,
+
+    @SerializedName("likeCount")
+    val likeCount: Long? = null,
+
+    @SerializedName("commentCount")
+    val commentCount: Long? = null,
+
+    @SerializedName("rank")
+    val rank: Int? = null,
 )

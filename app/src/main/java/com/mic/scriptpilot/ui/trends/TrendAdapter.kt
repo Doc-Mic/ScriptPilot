@@ -12,6 +12,7 @@ import com.google.android.material.chip.Chip
 import com.mic.scriptpilot.R
 import com.mic.scriptpilot.databinding.ItemTrendCardBinding
 import com.mic.scriptpilot.ui.common.playCardPressAnimation
+import java.text.NumberFormat
 
 class TrendAdapter(
     private val onTrendClick: (TrendUiModel) -> Unit,
@@ -38,8 +39,9 @@ class TrendAdapter(
             binding.progressOpportunity.max = 100
             binding.progressVirality.progress = model.virality
             binding.progressOpportunity.progress = model.opportunity
-            binding.textViralityValue.text = model.virality.toString()
-            binding.textOpportunityValue.text = model.opportunity.toString()
+            val numberFormat = NumberFormat.getIntegerInstance()
+            binding.textViralityValue.text = numberFormat.format(model.virality)
+            binding.textOpportunityValue.text = numberFormat.format(model.opportunity)
             binding.textExplanation.text = model.explanation
             binding.chipCompetition.text = model.competitionLabel
             styleCompetitionChip(binding.root.context, model.competitionLabel)
@@ -66,14 +68,15 @@ class TrendAdapter(
         }
 
         private fun styleCompetitionChip(context: Context, label: String) {
-            val colorRes =
+            val (backgroundRes, textColorRes) =
                 when (label.trim().lowercase()) {
-                    "low" -> R.color.trend_competition_low
-                    "high" -> R.color.trend_competition_high
-                    else -> R.color.trend_competition_medium
+                    "low" -> R.color.trend_competition_low to R.color.trend_competition_low_text
+                    "high" -> R.color.trend_competition_high to R.color.trend_competition_high_text
+                    else -> R.color.trend_competition_medium to R.color.trend_competition_medium_text
                 }
             binding.chipCompetition.chipBackgroundColor =
-                ColorStateList.valueOf(ContextCompat.getColor(context, colorRes))
+                ColorStateList.valueOf(ContextCompat.getColor(context, backgroundRes))
+            binding.chipCompetition.setTextColor(ContextCompat.getColor(context, textColorRes))
         }
     }
 

@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -20,7 +19,7 @@ import com.mic.scriptpilot.domain.model.Project
 import com.mic.scriptpilot.ui.common.adapter.ProjectCardStyle
 import com.mic.scriptpilot.ui.common.adapter.ProjectListAdapter
 import com.mic.scriptpilot.ui.common.playCardPressAnimation
-import com.mic.scriptpilot.ui.common.rootAppBarConfiguration
+import com.mic.scriptpilot.ui.common.setupScreenHeader
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import kotlinx.coroutines.launch
@@ -43,7 +42,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setupWithNavController(findNavController(), rootAppBarConfiguration())
+        binding.header.setupScreenHeader(R.string.title_home_dashboard)
 
         binding.textGreeting.setText(greetingStringRes())
 

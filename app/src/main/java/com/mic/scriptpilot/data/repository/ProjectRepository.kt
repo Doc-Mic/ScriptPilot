@@ -13,6 +13,7 @@ interface ProjectRepository {
     fun observeAll(): Flow<List<Project>>
     fun observeRecent(limit: Int): Flow<List<Project>>
     suspend fun save(project: Project): Long
+    suspend fun clearAll()
 }
 
 @Singleton
@@ -27,4 +28,8 @@ class ProjectRepositoryImpl @Inject constructor(
 
     override suspend fun save(project: Project): Long =
         dao.insert(project.toEntity())
+
+    override suspend fun clearAll() {
+        dao.deleteAll()
+    }
 }

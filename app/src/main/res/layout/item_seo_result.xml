@@ -5,35 +5,26 @@
     style="@style/SpCardFeature"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_sm"
+    android:layout_marginBottom="@dimen/spacing_md"
     app:cardCornerRadius="@dimen/card_corner"
     app:strokeColor="@color/card_home_stroke"
     app:strokeWidth="1dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top"
-        android:orientation="horizontal"
         android:padding="@dimen/spacing_md">
 
         <TextView
             android:id="@+id/textBody"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_sm"
-            android:layout_weight="1"
+            android:includeFontPadding="true"
+            android:lineSpacingExtra="2dp"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?attr/colorOnSurface"
-            tools:text="10 AI Tools Every YouTuber Needs" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonCopy"
-            style="@style/Widget.Material3.Button.IconButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="@string/content_desc_copy"
-            app:icon="@drawable/ic_copy"
-            app:iconTint="?attr/colorPrimary" />
-    </LinearLayout>
+            tools:text="10 AI Tools Every YouTuber Needs. This is a long generated SEO title or description that should wrap across multiple lines and remain fully visible inside the card without clipping or truncation." />
+    </FrameLayout>
 </com.google.android.material.card.MaterialCardView>

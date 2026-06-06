@@ -9,10 +9,6 @@
         android:icon="@drawable/ic_nav_projects"
         android:title="@string/nav_projects" />
     <item
-        android:id="@+id/aiToolsFragment"
-        android:icon="@drawable/ic_nav_ai_tools"
-        android:title="@string/nav_ai_tools" />
-    <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_nav_profile"
         android:title="@string/nav_profile" />

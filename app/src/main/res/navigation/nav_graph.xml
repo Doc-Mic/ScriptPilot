@@ -160,6 +160,20 @@
             android:name="ideaText"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/action_script_to_seo"
+            app:destination="@id/seoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="scriptDraft"
+                app:argType="string" />
+            <argument
+                android:name="topicHint"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
@@ -175,41 +189,41 @@
         tools:layout="@layout/fragment_project_list" />
 
     <fragment
-        android:id="@+id/aiToolsFragment"
-        android:name="com.mic.scriptpilot.ui.aitools.AiToolsFragment"
-        android:label="@string/nav_ai_tools"
-        tools:layout="@layout/fragment_ai_tools">
+        android:id="@+id/profileFragment"
+        android:name="com.mic.scriptpilot.ui.profile.ProfileFragment"
+        android:label="@string/nav_profile"
+        tools:layout="@layout/fragment_profile">
         <action
-            android:id="@+id/action_aiTools_to_trendInput"
-            app:destination="@id/trendInputFragment"
+            android:id="@+id/action_profile_to_editProfile"
+            app:destination="@id/editProfileFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_aiTools_to_idea"
-            app:destination="@id/ideaFragment"
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_aiTools_to_script"
-            app:destination="@id/scriptFragment"
+            android:id="@+id/action_profile_to_premiumPlans"
+            app:destination="@id/premiumPlansFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_aiTools_to_shorts"
-            app:destination="@id/shortsFragment"
+            android:id="@+id/action_profile_to_supportLegal"
+            app:destination="@id/supportLegalFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_aiTools_to_seo"
-            app:destination="@id/seoFragment"
+            android:id="@+id/action_profile_to_about"
+            app:destination="@id/aboutFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -217,14 +231,47 @@
     </fragment>
 
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.mic.scriptpilot.ui.profile.ProfileFragment"
-        android:label="@string/nav_profile"
-        tools:layout="@layout/fragment_profile" />
+        android:id="@+id/editProfileFragment"
+        android:name="com.mic.scriptpilot.ui.profile.EditProfileFragment"
+        android:label="@string/profile_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.mic.scriptpilot.ui.profile.SettingsFragment"
+        android:label="@string/profile_menu_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/premiumPlansFragment"
+        android:name="com.mic.scriptpilot.ui.profile.PremiumPlansFragment"
+        android:label="@string/profile_menu_premium"
+        tools:layout="@layout/fragment_premium_plans" />
+
+    <fragment
+        android:id="@+id/supportLegalFragment"
+        android:name="com.mic.scriptpilot.ui.profile.SupportLegalFragment"
+        android:label="@string/profile_menu_support"
+        tools:layout="@layout/fragment_support_legal" />
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.mic.scriptpilot.ui.profile.AboutFragment"
+        android:label="@string/profile_menu_about"
+        tools:layout="@layout/fragment_about" />
 
     <fragment
         android:id="@+id/seoFragment"
         android:name="com.mic.scriptpilot.ui.seo.SeoFragment"
         android:label="@string/title_seo"
-        tools:layout="@layout/fragment_seo" />
+        tools:layout="@layout/fragment_seo">
+        <argument
+            android:name="scriptDraft"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="topicHint"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
 </navigation>

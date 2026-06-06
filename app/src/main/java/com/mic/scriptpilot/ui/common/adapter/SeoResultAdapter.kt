@@ -7,15 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mic.scriptpilot.databinding.ItemSeoResultBinding
 import com.mic.scriptpilot.domain.model.SeoResultLine
-import com.mic.scriptpilot.ui.common.playCardPressAnimation
 
-class SeoResultAdapter(
-    private val onCopy: (String) -> Unit,
-) : ListAdapter<SeoResultLine, SeoResultAdapter.Vh>(Diff) {
+class SeoResultAdapter : ListAdapter<SeoResultLine, SeoResultAdapter.Vh>(Diff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Vh {
         val binding = ItemSeoResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return Vh(binding, onCopy)
+        return Vh(binding)
     }
 
     override fun onBindViewHolder(holder: Vh, position: Int) {
@@ -24,14 +21,12 @@ class SeoResultAdapter(
 
     class Vh(
         private val binding: ItemSeoResultBinding,
-        private val onCopy: (String) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SeoResultLine) {
             binding.textBody.text = item.text
-            binding.buttonCopy.setOnClickListener { view ->
-                view.playCardPressAnimation()
-                onCopy(item.text)
-            }
+            binding.textBody.setSingleLine(false)
+            binding.textBody.setHorizontallyScrolling(false)
+            binding.root.requestLayout()
         }
     }
 

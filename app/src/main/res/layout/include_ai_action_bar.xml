@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/ai_action_surface"
+    app:cardCornerRadius="@dimen/card_corner"
+    app:cardElevation="@dimen/card_elevation"
+    app:strokeColor="@color/ai_action_stroke"
+    app:strokeWidth="1dp"
+    tools:visibility="visible">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingHorizontal="@dimen/spacing_sm"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="6dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonCopy"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minHeight="36dp"
+                android:minWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="12dp"
+                android:text="@string/ai_action_copy"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_copy"
+                app:iconPadding="4dp"
+                app:iconTint="?attr/colorPrimary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonSave"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minHeight="36dp"
+                android:minWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="12dp"
+                android:text="@string/ai_action_save"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_save"
+                app:iconPadding="4dp"
+                app:iconTint="?attr/colorPrimary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonFeedback"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minHeight="36dp"
+                android:minWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="12dp"
+                android:text="@string/ai_action_feedback"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_thumb_down"
+                app:iconPadding="4dp"
+                app:iconTint="?attr/colorPrimary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonShare"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minHeight="36dp"
+                android:minWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="12dp"
+                android:text="@string/ai_action_share"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_share"
+                app:iconPadding="4dp"
+                app:iconTint="?attr/colorPrimary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonRegenerate"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minHeight="36dp"
+                android:minWidth="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="12dp"
+                android:text="@string/ai_action_regenerate"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_refresh"
+                app:iconPadding="4dp"
+                app:iconTint="?attr/colorPrimary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonEdit"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:minWidth="0dp"
+                android:text="@string/ai_action_edit"
+                android:visibility="gone"
+                app:icon="@drawable/ic_edit"
+                app:iconTint="?attr/colorPrimary"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonSaveProject"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:minWidth="0dp"
+                android:text="@string/ai_action_save_project"
+                android:visibility="gone"
+                app:icon="@drawable/ic_save"
+                app:iconTint="?attr/colorPrimary"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonSendSeo"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:minWidth="0dp"
+                android:text="@string/ai_action_send_seo"
+                android:visibility="gone"
+                app:icon="@drawable/ic_rocket"
+                app:iconTint="?attr/colorPrimary"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonGenerateCta"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:minWidth="0dp"
+                android:text="@string/ai_action_generate_cta"
+                android:visibility="gone"
+                app:icon="@drawable/ic_movie"
+                app:iconTint="?attr/colorPrimary"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonGenerateCaptions"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:minWidth="0dp"
+                android:text="@string/ai_action_generate_captions"
+                android:visibility="gone"
+                app:icon="@drawable/ic_captions"
+                app:iconTint="?attr/colorPrimary"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </HorizontalScrollView>
+</com.google.android.material.card.MaterialCardView>

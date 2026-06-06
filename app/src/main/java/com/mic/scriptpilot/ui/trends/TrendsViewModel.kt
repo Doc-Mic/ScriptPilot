@@ -3,6 +3,7 @@ package com.mic.scriptpilot.ui.trends
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mic.scriptpilot.data.repository.ProfilePreferencesRepository
 import com.mic.scriptpilot.data.repository.TrendRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -21,6 +22,7 @@ data class TrendResultUiState(
 @HiltViewModel
 class TrendsViewModel @Inject constructor(
     private val trendRepository: TrendRepository,
+    private val profilePreferencesRepository: ProfilePreferencesRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(TrendResultUiState())
     val uiState: StateFlow<TrendResultUiState> = _uiState.asStateFlow()
@@ -45,6 +47,7 @@ class TrendsViewModel @Inject constructor(
                 trendRepository.findTrends(categoryId, location, timeRange)
             }.onSuccess { list ->
                 val models = list.map { it.toUiModel() }
+                profilePreferencesRepository.incrementTrendsExplored()
                 _uiState.update {
                     TrendResultUiState(
                         loading = false,

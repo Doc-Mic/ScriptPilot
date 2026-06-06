@@ -3,6 +3,8 @@ package com.mic.scriptpilot.di
 import com.mic.scriptpilot.data.repository.ApiIdeaRepository
 import com.mic.scriptpilot.data.repository.ApiScriptRepository
 import com.mic.scriptpilot.data.repository.ApiSeoRepository
+import com.mic.scriptpilot.data.repository.AuthRepository
+import com.mic.scriptpilot.data.repository.FirebaseAuthRepository
 import com.mic.scriptpilot.data.repository.IdeaRepository
 import com.mic.scriptpilot.data.repository.ProjectRepository
 import com.mic.scriptpilot.data.repository.ProjectRepositoryImpl
@@ -38,4 +40,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindSeoRepository(impl: ApiSeoRepository): SeoRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthRepository(impl: FirebaseAuthRepository): AuthRepository
 }

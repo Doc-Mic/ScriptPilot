@@ -60,7 +60,9 @@ data class SeoRequest(
     @SerializedName("scriptDraft")
     val scriptDraft: String,
     @SerializedName("workingTitle")
-    val workingTitle: String,
+    val workingTitle: String = "",
     @SerializedName("topicHint")
     val topicHint: String,
+    @SerializedName("contentTypes")
+    val contentTypes: List<String> = emptyList(),
 )

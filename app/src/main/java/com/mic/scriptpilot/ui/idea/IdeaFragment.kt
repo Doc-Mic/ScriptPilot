@@ -13,13 +13,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.mic.scriptpilot.R
 import com.mic.scriptpilot.databinding.FragmentIdeaBinding
+import com.mic.scriptpilot.ui.common.AiActionBarConfig
+import com.mic.scriptpilot.ui.common.AiActionBarController
+import com.mic.scriptpilot.ui.common.applyNavigationBarBottomMargin
 import com.mic.scriptpilot.ui.common.adapter.IdeaListAdapter
-import com.mic.scriptpilot.ui.common.rootAppBarConfiguration
+import com.mic.scriptpilot.ui.common.navigateHomeClearingWorkflow
+import com.mic.scriptpilot.ui.common.reserveBottomOverlaySpace
+import com.mic.scriptpilot.ui.common.setupScreenHeader
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -35,6 +39,7 @@ class IdeaFragment : Fragment() {
         val action = IdeaFragmentDirections.actionIdeaToScript(idea.title)
         findNavController().navigate(action)
     }
+    private var ideasSaved = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentIdeaBinding.inflate(inflater, container, false)
@@ -43,14 +48,25 @@ class IdeaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setupWithNavController(findNavController(), rootAppBarConfiguration())
+        val navController = findNavController()
+        binding.header.setupScreenHeader(
+            R.string.title_ideas,
+            showBack = true,
+            showHome = true,
+            onHome = { navController.navigateHomeClearingWorkflow() },
+        ) {
+            navController.navigateUp()
+        }
+        binding.aiActionBar.root.applyNavigationBarBottomMargin()
+        binding.scrollContent.reserveBottomOverlaySpace(binding.aiActionBar.root)
 
         val styles = resources.getStringArray(R.array.idea_styles)
+        val preferences = viewModel.creatorPreferences.value
         binding.inputStyle.setAdapter(
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, styles),
         )
         if (binding.inputStyle.text.isNullOrEmpty()) {
-            binding.inputStyle.setText(styles.first(), false)
+            binding.inputStyle.setText(preferences.defaultContentStyle.takeIf { it in styles } ?: styles.first(), false)
         }
 
         if (binding.inputTopic.text.isNullOrEmpty() && args.topic.isNotBlank()) {
@@ -78,6 +94,7 @@ class IdeaFragment : Fragment() {
         binding.buttonGenerate.setOnClickListener {
             val topic = binding.inputTopic.text?.toString().orEmpty()
             val style = binding.inputStyle.text?.toString().orEmpty().ifBlank { styles.first() }
+            ideasSaved = false
             viewModel.generateIdeas(topic, style)
         }
 
@@ -91,6 +108,17 @@ class IdeaFragment : Fragment() {
                     val hasIdeas = state.ideas.isNotEmpty()
                     binding.recyclerIdeas.isVisible = hasIdeas
                     binding.emptyIdeas.isVisible = !state.loading && !hasIdeas
+                    binding.aiActionBar.root.isVisible = hasIdeas
+                    if (hasIdeas) {
+                        bindAiActions(styles)
+                    }
+
+                    if (state.saveComplete) {
+                        ideasSaved = true
+                        bindAiActions(styles)
+                        Snackbar.make(binding.root, R.string.ai_action_saved_projects, Snackbar.LENGTH_SHORT).show()
+                        viewModel.consumeSaveEvent()
+                    }
 
                     state.errorMessage?.let { msg ->
                         Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
@@ -100,6 +128,45 @@ class IdeaFragment : Fragment() {
             }
         }
     }
+
+    private fun bindAiActions(styles: Array<String>) {
+        AiActionBarController.bind(
+            binding.aiActionBar,
+            AiActionBarConfig(
+                saved = ideasSaved,
+                onCopy = {
+                    AiActionBarController.copyText(requireContext(), binding.root, generatedIdeasText())
+                },
+                onSave = {
+                    viewModel.saveCurrentIdeas(binding.inputTopic.text?.toString().orEmpty())
+                },
+                onFeedback = {
+                    AiActionBarController.showFeedbackDialog(requireContext(), binding.root)
+                },
+                onShare = {
+                    AiActionBarController.shareText(requireContext(), binding.root, generatedIdeasText())
+                },
+                onRegenerate = {
+                    Snackbar.make(binding.root, R.string.ai_action_generating_new, Snackbar.LENGTH_SHORT).show()
+                    val topic = binding.inputTopic.text?.toString().orEmpty()
+                    val style = binding.inputStyle.text?.toString().orEmpty().ifBlank { styles.first() }
+                    ideasSaved = false
+                    viewModel.generateIdeas(topic, style)
+                },
+            ),
+        )
+    }
+
+    private fun generatedIdeasText(): String =
+        adapter.currentList.joinToString("\n\n") { item ->
+            buildString {
+                append(item.title)
+                if (item.angle.isNotBlank()) {
+                    append("\n")
+                    append(item.angle)
+                }
+            }
+        }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -4,8 +4,14 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mic.scriptpilot.data.repository.ProjectRepository
+import com.mic.scriptpilot.data.repository.ProfilePreferencesRepository
 import com.mic.scriptpilot.data.repository.SeoRepository
+import com.mic.scriptpilot.domain.model.Project
+import com.mic.scriptpilot.domain.model.ProjectType
+import com.mic.scriptpilot.domain.model.SeoResultKind
 import com.mic.scriptpilot.domain.model.SeoResultLine
+import java.util.UUID
 import com.mic.scriptpilot.ui.util.toUserFacingMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -30,6 +36,7 @@ data class SeoUiState(
     val isLoading: Boolean = false,
     val hasGenerated: Boolean = false,
     val errorMessage: String? = null,
+    val saveComplete: Boolean = false,
 ) {
     fun itemsForTab(): List<SeoResultLine> =
         when (tab) {
@@ -44,6 +51,8 @@ data class SeoUiState(
 @HiltViewModel
 class SeoViewModel @Inject constructor(
     private val seoRepository: SeoRepository,
+    private val projectRepository: ProjectRepository,
+    private val profilePreferencesRepository: ProfilePreferencesRepository,
     @ApplicationContext private val appContext: Context,
 ) : ViewModel() {
     private val _state = MutableStateFlow(SeoUiState())
@@ -53,11 +62,30 @@ class SeoViewModel @Inject constructor(
         _state.update { it.copy(tab = tab) }
     }
 
+    fun updateDescription(text: String) {
+        _state.update { state ->
+            if (!state.hasGenerated) return@update state
+            val cleanText = text.trim()
+            val line =
+                state.descriptions.firstOrNull()?.copy(text = cleanText)
+                    ?: SeoResultLine(
+                        id = UUID.randomUUID().toString(),
+                        kind = SeoResultKind.DESCRIPTION,
+                        text = cleanText,
+                    )
+            state.copy(descriptions = if (cleanText.isBlank()) emptyList() else listOf(line))
+        }
+    }
+
     fun consumeError() {
         _state.update { it.copy(errorMessage = null) }
     }
 
-    fun generate(scriptDraft: String, workingTitle: String, topicHint: String) {
+    fun consumeSaveEvent() {
+        _state.update { it.copy(saveComplete = false) }
+    }
+
+    fun generate(scriptDraft: String, topicHint: String, contentTypes: List<String>) {
         if (_state.value.isLoading) return
         viewModelScope.launch {
             _state.update {
@@ -68,12 +96,19 @@ class SeoViewModel @Inject constructor(
                     descriptions = emptyList(),
                     tags = emptyList(),
                     errorMessage = null,
+                    saveComplete = false,
                 )
             }
             runCatching {
-                seoRepository.generate(scriptDraft, workingTitle, topicHint)
+                seoRepository.generate(scriptDraft, topicHint, contentTypes)
             }.onSuccess { gen ->
-                val hasAny = gen.titles.isNotEmpty() || gen.descriptions.isNotEmpty() || gen.tags.isNotEmpty()
+                val hasAny =
+                    gen.titles.isNotEmpty() ||
+                        gen.descriptions.isNotEmpty() ||
+                        gen.tags.isNotEmpty()
+                if (hasAny) {
+                    profilePreferencesRepository.incrementSeoGenerations()
+                }
                 _state.update {
                     it.copy(
                         isLoading = false,
@@ -102,6 +137,56 @@ class SeoViewModel @Inject constructor(
             }
         }
     }
+
+    fun saveCurrentPackage(sourceText: String, contextHint: String) {
+        val state = _state.value
+        if (!state.hasGenerated) return
+        viewModelScope.launch {
+            val body = state.asPackageText()
+            val title =
+                listOf(contextHint, sourceText)
+                    .firstOrNull { it.isNotBlank() }
+                    ?.lineSequence()
+                    ?.firstOrNull { it.isNotBlank() }
+                    .orEmpty()
+                    .take(80)
+                    .ifBlank { appContext.getString(com.mic.scriptpilot.R.string.seo_package_title) }
+            runCatching {
+                projectRepository.save(
+                    Project(
+                        id = 0,
+                        title = title,
+                        script = body,
+                        type = ProjectType.IDEA,
+                        timestamp = System.currentTimeMillis(),
+                    ),
+                )
+            }.onSuccess {
+                _state.update { it.copy(saveComplete = true) }
+            }.onFailure { e ->
+                Log.e(TAG, "saveCurrentPackage failed", e)
+                _state.update { it.copy(errorMessage = e.toUserFacingMessage(appContext)) }
+            }
+        }
+    }
+
+    private fun SeoUiState.asPackageText(): String =
+        listOf(
+            "Titles" to titles,
+            "Descriptions" to descriptions,
+            "Tags" to tags,
+        ).joinToString("\n\n") { (label, lines) ->
+            buildString {
+                append(label)
+                append("\n")
+                lines.forEachIndexed { index, line ->
+                    append(index + 1)
+                    append(". ")
+                    append(line.text)
+                    append("\n")
+                }
+            }.trim()
+        }
 
     private companion object {
         const val TAG = "SeoViewModel"

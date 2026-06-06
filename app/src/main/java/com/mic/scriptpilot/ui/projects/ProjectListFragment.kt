@@ -11,14 +11,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mic.scriptpilot.databinding.FragmentProjectListBinding
 import com.mic.scriptpilot.domain.model.Project
 import com.mic.scriptpilot.ui.common.adapter.ProjectCardStyle
 import com.mic.scriptpilot.ui.common.adapter.ProjectListAdapter
-import com.mic.scriptpilot.ui.common.rootAppBarConfiguration
+import com.mic.scriptpilot.ui.common.setupScreenHeader
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -40,7 +39,7 @@ class ProjectListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setupWithNavController(findNavController(), rootAppBarConfiguration())
+        binding.header.setupScreenHeader(com.mic.scriptpilot.R.string.title_projects)
 
         binding.recyclerProjects.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerProjects.adapter = adapter

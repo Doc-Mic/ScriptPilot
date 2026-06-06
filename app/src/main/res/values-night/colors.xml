@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="sp_nav_primary_night">#A5B4FC</color>
-    <color name="nav_bar_item_ripple">#55312E81</color>
     <color name="sp_icon_circle_start">#4338CA</color>
     <color name="sp_icon_circle_end">#312E81</color>
     <color name="card_home_stroke">#66818CF8</color>
     <color name="label_pill_bg">#33818CF8</color>
     <color name="nav_bar_icon_inactive">#94A3B8</color>
+    <color name="ai_action_surface">#141B2E</color>
+    <color name="ai_action_selected">#554F46E5</color>
+    <color name="ai_action_stroke">#555B63F4</color>
 
     <color name="trend_competition_low">#4434D399</color>
-    <color name="trend_competition_medium">#4464748B</color>
-    <color name="trend_competition_high">#55F87171</color>
+    <color name="trend_competition_low_text">#7DD3FC</color>
+    <color name="trend_competition_medium">#44F59E0B</color>
+    <color name="trend_competition_medium_text">#FCD34D</color>
+    <color name="trend_competition_high">#55F43F5E</color>
+    <color name="trend_competition_high_text">#FDA4AF</color>
 </resources>

@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="trend_categories">
-        <item>All</item>
-        <item>Music</item>
-        <item>Pets &amp; Animals</item>
-        <item>Sports</item>
-        <item>Gaming</item>
-        <item>People &amp; Blogs</item>
-        <item>Comedy</item>
-        <item>Entertainment</item>
-        <item>News &amp; Politics</item>
-        <item>Howto &amp; Style</item>
-        <item>Education</item>
-        <item>Science &amp; Technology</item>
-    </string-array>
-
     <string-array name="trend_locations">
         <item>Global</item>
         <item>United States</item>
@@ -60,6 +45,11 @@
         <item>Authoritative</item>
         <item>Playful</item>
         <item>Inspirational</item>
+    </string-array>
+
+    <string-array name="profile_theme_modes">
+        <item>Dark</item>
+        <item>Light</item>
     </string-array>
 
 </resources>

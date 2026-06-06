@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-
-    <color name="seed">#4F46E5</color>
     <color name="sp_primary">#4F46E5</color>
     <color name="sp_on_primary">#FFFFFF</color>
     <color name="sp_primary_container">#E0E7FF</color>
@@ -18,16 +14,21 @@
     <color name="sp_on_surface_variant">#475569</color>
     <color name="sp_outline">#94A3B8</color>
     <color name="sp_error">#DC2626</color>
-    <color name="sp_scrim">#66000000</color>
+    <color name="sp_nav_primary_night">#4F46E5</color>
 
     <color name="sp_icon_circle_start">#EEF2FF</color>
     <color name="sp_icon_circle_end">#DDD6FE</color>
     <color name="card_home_stroke">#1F4F46E5</color>
     <color name="label_pill_bg">#1A4F46E5</color>
     <color name="nav_bar_icon_inactive">#99475569</color>
-    <color name="nav_bar_item_ripple">#334F46E5</color>
+    <color name="ai_action_surface">#F1F5F9</color>
+    <color name="ai_action_selected">#334F46E5</color>
+    <color name="ai_action_stroke">#334F46E5</color>
 
     <color name="trend_competition_low">#3320A36A</color>
-    <color name="trend_competition_medium">#3364748B</color>
-    <color name="trend_competition_high">#40DC2626</color>
+    <color name="trend_competition_low_text">#047857</color>
+    <color name="trend_competition_medium">#33F59E0B</color>
+    <color name="trend_competition_medium_text">#B45309</color>
+    <color name="trend_competition_high">#40E11D48</color>
+    <color name="trend_competition_high_text">#BE123C</color>
 </resources>

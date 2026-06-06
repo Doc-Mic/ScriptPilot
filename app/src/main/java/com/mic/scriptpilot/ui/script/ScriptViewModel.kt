@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mic.scriptpilot.data.repository.ProjectRepository
+import com.mic.scriptpilot.data.repository.ProfilePreferencesRepository
 import com.mic.scriptpilot.data.repository.ScriptRepository
 import com.mic.scriptpilot.domain.model.Project
 import com.mic.scriptpilot.domain.model.ProjectType
@@ -30,10 +31,12 @@ data class ScriptUiState(
 class ScriptViewModel @Inject constructor(
     private val scriptRepository: ScriptRepository,
     private val projectRepository: ProjectRepository,
+    private val profilePreferencesRepository: ProfilePreferencesRepository,
     @ApplicationContext private val appContext: Context,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ScriptUiState())
     val uiState: StateFlow<ScriptUiState> = _uiState.asStateFlow()
+    val creatorPreferences = profilePreferencesRepository.creatorPreferences
 
     fun generateScript(idea: String, durationLabel: String, tone: String) {
         viewModelScope.launch {
@@ -41,6 +44,7 @@ class ScriptViewModel @Inject constructor(
             runCatching {
                 scriptRepository.generateLongFormScript(idea.trim(), durationLabel, tone)
             }.onSuccess { outline ->
+                profilePreferencesRepository.incrementScriptsCreated()
                 _uiState.update {
                     ScriptUiState(loading = false, outline = outline, errorMessage = null, saveComplete = false)
                 }
@@ -53,17 +57,16 @@ class ScriptViewModel @Inject constructor(
         }
     }
 
-    fun saveCurrent(ideaLine: String, outline: ScriptOutline) {
+    fun saveCurrent(ideaLine: String, scriptText: String) {
         viewModelScope.launch {
             val titleCandidate = ideaLine.lines().firstOrNull { it.isNotBlank() }.orEmpty()
             val title = titleCandidate.take(80).ifBlank { "YouTube script" }
-            val body = outline.asFullScript()
             runCatching {
                 projectRepository.save(
                     Project(
                         id = 0,
                         title = title,
-                        script = body,
+                        script = scriptText,
                         type = ProjectType.SCRIPT,
                         timestamp = System.currentTimeMillis(),
                     ),

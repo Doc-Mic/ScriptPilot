@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/headerRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/screen_header_horizontal_padding"
+    android:paddingTop="@dimen/screen_header_top_padding"
+    android:paddingEnd="@dimen/screen_header_horizontal_padding"
+    android:paddingBottom="@dimen/spacing_md">
+
+    <LinearLayout
+        android:id="@+id/titleRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonBack"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="@dimen/screen_header_back_size"
+            android:layout_height="@dimen/screen_header_back_size"
+            android:layout_marginEnd="@dimen/spacing_sm"
+            android:contentDescription="@string/content_desc_navigate_back"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:visibility="gone"
+            app:icon="@drawable/ic_arrow_back"
+            app:iconSize="24dp"
+            app:iconTint="?attr/colorOnSurface"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textHeaderTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/TextAppearance.ScriptPilot.ScreenHeaderLarge"
+            tools:text="ScriptPilot" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonHome"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="@dimen/screen_header_back_size"
+            android:layout_height="@dimen/screen_header_back_size"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:contentDescription="@string/content_desc_navigate_home"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:visibility="gone"
+            app:icon="@drawable/ic_nav_home"
+            app:iconSize="24dp"
+            app:iconTint="?attr/colorOnSurface"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textHeaderSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:includeFontPadding="false"
+        android:textAppearance="@style/TextAppearance.ScriptPilot.ScreenSubtitle"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:visibility="gone"
+        tools:text="AI co-pilot for YouTube creators"
+        tools:visibility="visible" />
+</LinearLayout>

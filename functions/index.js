@@ -133,6 +133,10 @@ function mapTrendResult(r, category, region) {
     competition: r.competition,
     opportunity: r.opportunity,
     momentum: r.momentum,
+    viewCount: r.views || 0,
+    likeCount: r.likes || 0,
+    commentCount: r.comments || 0,
+    rank: r.rank || 0,
   };
 }
 
@@ -154,22 +158,61 @@ function resolveDurationKey(label, queryDur) {
 }
 
 function targetWordsForDurationKey(key) {
+  return durationProfileForKey(key).targetWords;
+}
+
+function durationProfileForKey(key) {
   const fixed = {
-    "3": 450,
-    "5": 750,
-    "10": 1500,
-    "15": 2250,
+    "3": { minutes: 3, minWords: 350, maxWords: 450, targetWords: 400 },
+    "5": { minutes: 5, minWords: 650, maxWords: 850, targetWords: 750 },
+    "10": { minutes: 10, minWords: 1300, maxWords: 1700, targetWords: 1500 },
+    "15": { minutes: 15, minWords: 2000, maxWords: 2600, targetWords: 2300 },
   };
-  if (fixed[key]) {
-    return fixed[key];
-  }
+  if (fixed[key]) return fixed[key];
+
   if (String(key).startsWith("m")) {
     const n = parseInt(String(key).slice(1), 10);
     if (Number.isFinite(n) && n >= 1 && n <= 180) {
-      return Math.round(n * 150);
+      const minWords = Math.round(n * 130);
+      const maxWords = Math.round(n * 160);
+      return {
+        minutes: n,
+        minWords,
+        maxWords,
+        targetWords: Math.round((minWords + maxWords) / 2),
+      };
     }
   }
-  return 750;
+  return fixed["5"];
+}
+
+function structureGuidanceForDuration(minutes) {
+  if (minutes <= 3) {
+    return [
+      "Use a fast hook, concise intro, 2 tight body beats, and a short outro.",
+      "Keep examples brief; every sentence should move the viewer forward.",
+      "Suggested distribution: hook 8%, intro 12%, body 65%, outro/CTA 15%.",
+    ].join("\n");
+  }
+  if (minutes <= 5) {
+    return [
+      "Use a clear hook, short intro, 3 focused body sections, and a compact outro.",
+      "Include one practical example or contrast, but avoid padding.",
+      "Suggested distribution: hook 7%, intro 13%, body 68%, outro/CTA 12%.",
+    ].join("\n");
+  }
+  if (minutes <= 10) {
+    return [
+      "Use a strong hook, paced intro, 4-5 body sections, transitions, and a useful outro.",
+      "Add examples, mini-stories, objections, and practical takeaways where relevant.",
+      "Suggested distribution: hook 5%, intro 10%, body 75%, outro/CTA 10%.",
+    ].join("\n");
+  }
+  return [
+    "Use a cinematic hook, a confident setup, 6-8 body sections, smooth transitions, examples, and a satisfying outro.",
+    "Develop the topic with storytelling, context, stakes, examples, counterpoints, and actionable takeaways.",
+    "Suggested distribution: hook 4%, intro 8%, body 80%, outro/CTA 8%.",
+  ].join("\n");
 }
 
 function humanDurationForKey(key, labelForFallback) {
@@ -209,6 +252,111 @@ function sectionsToBodyText(sections) {
     })
     .filter(Boolean)
     .join("\n\n");
+}
+
+function createScriptPrompt(title, tone, durationLabel, profile) {
+  return [
+    "Write a complete, production-ready YouTube script.",
+    "",
+    `Title / idea: ${title}`,
+    `Tone: ${tone}`,
+    `Target spoken duration: approximately ${durationLabel}.`,
+    `Target word count: ${profile.minWords}-${profile.maxWords} words, aiming near ${profile.targetWords} words.`,
+    "Assume natural YouTube narration at roughly 130-160 spoken words per minute.",
+    "",
+    "Pacing and structure:",
+    structureGuidanceForDuration(profile.minutes),
+    "",
+    "Style rules:",
+    "- Conversational, clear, creator-friendly YouTube narration.",
+    "- Avoid unnecessary fluff, filler phrases, repeated intros, and generic motivational padding.",
+    "- Use smooth transitions between ideas.",
+    "- The body must contain enough spoken copy to hit the requested duration.",
+    "- Do not summarize with placeholders; write the actual script words the creator can read aloud.",
+    "",
+    "Return ONLY valid JSON in this exact shape:",
+    `{
+      "hook": "",
+      "intro": "",
+      "sections": [
+        {
+          "heading": "",
+          "content": ""
+        }
+      ],
+      "outro": ""
+    }`,
+  ].join("\n");
+}
+
+function repairScriptPrompt(title, tone, durationLabel, profile, script, wordCount) {
+  const direction =
+    wordCount < profile.minWords
+      ? "Expand the script naturally with more useful examples, transitions, and explanation. Do not add filler."
+      : "Compress the script while preserving the hook, key points, pacing, and creator usefulness.";
+
+  return [
+    "Revise this YouTube script so it matches the requested spoken duration.",
+    "",
+    `Title / idea: ${title}`,
+    `Tone: ${tone}`,
+    `Target spoken duration: approximately ${durationLabel}.`,
+    `Required word range: ${profile.minWords}-${profile.maxWords} words, aiming near ${profile.targetWords} words.`,
+    `Current estimated word count: ${wordCount}.`,
+    direction,
+    "",
+    "Keep the same JSON shape. Return ONLY valid JSON.",
+    "",
+    JSON.stringify(
+      {
+        hook: script.hook,
+        intro: script.intro,
+        sections: script.sections,
+        outro: script.outro,
+      },
+      null,
+      2
+    ),
+  ].join("\n");
+}
+
+function normalizeScriptPayload(parsed) {
+  const sections = Array.isArray(parsed?.sections) ? parsed.sections : [];
+  const bodyText =
+    sectionsToBodyText(sections) ||
+    (parsed?.body || "").trim() ||
+    (parsed?.intro || "").trim() ||
+    "";
+
+  return {
+    hook: (parsed?.hook || "").trim(),
+    intro: (parsed?.intro || "").trim(),
+    sections,
+    body: bodyText,
+    outro: (parsed?.outro || "").trim(),
+  };
+}
+
+function estimateScriptWordCount(script) {
+  const text = [
+    script?.hook,
+    script?.intro,
+    script?.body,
+    script?.outro,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const words = text.match(/[A-Za-z0-9]+(?:['-][A-Za-z0-9]+)?/g);
+  return words ? words.length : 0;
+}
+
+function isWordCountInRange(wordCount, profile) {
+  return wordCount >= profile.minWords && wordCount <= profile.maxWords;
+}
+
+function maxTokensForScript(profile) {
+  return Math.min(7600, Math.max(1800, Math.ceil(profile.maxWords * 1.65)));
 }
 
 function safeSeoFromParsed(parsed) {
@@ -323,11 +471,10 @@ exports.findTrends = onRequest(
       }
 
       const results = await Promise.all(
-        videos.map(async (video) => {
-          const metrics = calculateMetrics(video);
+        videos.map(async (video, index) => {
+          const metrics = calculateMetrics(video, index, categoryId);
 
-          let summary =
-            "Trending creator niche with rising audience interest.";
+          let summary = createLocalTrendSummary(video.snippet.title, metrics);
 
           try {
             summary = await generateGroqSummary(
@@ -348,7 +495,11 @@ exports.findTrends = onRequest(
             virality: metrics.virality,
             competition: metrics.competition,
             opportunity: metrics.opportunity,
-            momentum: getMomentum(metrics.virality),
+            momentum: metrics.momentum,
+            views: metrics.views,
+            likes: metrics.likes,
+            comments: metrics.comments,
+            rank: metrics.rank,
             summary,
           };
         })
@@ -489,30 +640,13 @@ exports.createScript = onRequest(
 
       const groqKey = GROQ_KEY.value();
 
-      const targetWords = targetWordsForDurationKey(durationKey);
-
-      const prompt =
-        `Write a professional YouTube script.\n\n` +
-        `Title: ${title}\n` +
-        `Tone: ${tone}\n` +
-        `Target Length: ${targetWords} words\n\n` +
-        `Return ONLY valid JSON.\n\n` +
-        `{
-          "hook": "",
-          "intro": "",
-          "sections": [
-            {
-              "heading": "",
-              "content": ""
-            }
-          ],
-          "outro": ""
-        }`;
+      const durationProfile = durationProfileForKey(durationKey);
+      const durationLabel = humanDurationForKey(durationKey, params.durationLabel);
 
       const data = await callGroq(
-        prompt,
+        createScriptPrompt(title, tone, durationLabel, durationProfile),
         groqKey,
-        2200,
+        maxTokensForScript(durationProfile),
         0.8
       );
 
@@ -532,31 +666,63 @@ exports.createScript = onRequest(
             body: "",
             outro: "",
             cta: "",
-            duration: humanDurationForKey(durationKey, params.durationLabel),
+            duration: durationLabel,
             tone,
           },
         });
       }
 
-      const bodyText =
-        sectionsToBodyText(parsed?.sections) ||
-        (parsed?.intro || "").trim() ||
-        "";
+      let normalizedScript = normalizeScriptPayload(parsed);
+      let wordCount = estimateScriptWordCount(normalizedScript);
+
+      if (!isWordCountInRange(wordCount, durationProfile)) {
+        logger.info("Create Script word count outside target; retrying once", {
+          duration: durationLabel,
+          wordCount,
+          minWords: durationProfile.minWords,
+          maxWords: durationProfile.maxWords,
+        });
+
+        try {
+          const repairData = await callGroq(
+            repairScriptPrompt(
+              title,
+              tone,
+              durationLabel,
+              durationProfile,
+              normalizedScript,
+              wordCount
+            ),
+            groqKey,
+            maxTokensForScript(durationProfile),
+            0.65
+          );
+          const repairText =
+            repairData?.choices?.[0]?.message?.content?.trim() || "";
+          const repairParsed = extractJSON(repairText);
+          normalizedScript = normalizeScriptPayload(repairParsed);
+          wordCount = estimateScriptWordCount(normalizedScript);
+        } catch (repairErr) {
+          logger.error("Create Script repair failed:", repairErr);
+        }
+      }
 
       return res.json({
         script: {
           title,
           hook:
-            parsed?.hook ||
+            normalizedScript.hook ||
             "Welcome back! Today we're diving into something crazy.",
-          intro: parsed?.intro || "",
-          body: bodyText,
+          intro: normalizedScript.intro || "",
+          body: normalizedScript.body,
           outro:
-            parsed?.outro ||
+            normalizedScript.outro ||
             "Subscribe for more awesome content.",
           cta: "Subscribe and turn on notifications.",
-          duration: humanDurationForKey(durationKey, params.durationLabel),
+          duration: durationLabel,
           tone,
+          targetWords: durationProfile.targetWords,
+          wordCount,
         },
       });
 
@@ -664,6 +830,9 @@ exports.seoAssistant = onRequest(
       const workingTitle = (params.workingTitle || "").toString().trim();
       const topicHint = (params.topicHint || "").toString().trim();
       const topicParam = (params.topic || "").toString().trim();
+      const contentTypes = Array.isArray(params.contentTypes)
+        ? params.contentTypes.filter(Boolean).join(", ")
+        : (params.contentTypes || "").toString().trim();
 
       const topic =
         topicParam ||
@@ -682,23 +851,31 @@ exports.seoAssistant = onRequest(
       const groqKey = GROQ_KEY.value();
 
       const prompt =
-        `Generate YouTube SEO content.\n\n` +
+        `Generate a premium YouTube SEO packaging pack for a creator.\n\n` +
         `Primary topic / context:\n${topic}\n\n` +
+        (contentTypes ? `Content types: ${contentTypes}\n\n` : "") +
         (workingTitle ? `Working title: ${workingTitle}\n\n` : "") +
         (scriptDraft
           ? `Script excerpt:\n${scriptDraft.slice(0, 2000)}\n\n`
           : "") +
+        `Requirements:\n` +
+        `- Generate exactly 5 title options: mix CTR focused, curiosity focused, and SEO focused.\n` +
+        `- Generate one professional YouTube SEO description between 500 and 800 words. Include a strong opening hook, content summary, naturally integrated keywords, viewer value section, call-to-action, and 3-5 hashtags at the end. Do not generate multiple descriptions.\n` +
+        `- The description must feel like a real YouTube workflow: one detailed optimized description, not short alternatives.\n` +
+        `- Generate 15 to 20 useful YouTube SEO keyword tags based on the topic, not hashtags.\n` +
+        `- Tags must be plain keywords or short phrases without # symbols.\n` +
+        `- Avoid spammy repetition and avoid fake claims.\n\n` +
         `Return ONLY valid JSON.\n\n` +
         `{
           "titles": [],
-          "descriptions": [],
+          "description": "",
           "tags": []
         }`;
 
       const data = await callGroq(
         prompt,
         groqKey,
-        1200,
+        2600,
         0.8
       );
 
@@ -794,10 +971,11 @@ async function fetchTrendingVideos(
 /* =================================================
    📈 METRICS
 ================================================= */
-function calculateMetrics(video) {
+function calculateMetrics(video, index = 0, categoryId = "0") {
   const views = Number(video.statistics?.viewCount || 0);
   const likes = Number(video.statistics?.likeCount || 0);
   const comments = Number(video.statistics?.commentCount || 0);
+  const title = video.snippet?.title || "";
 
   const publishedAt = new Date(video.snippet.publishedAt);
 
@@ -810,44 +988,181 @@ function calculateMetrics(video) {
   const viewsPerDay = views / safeDays;
 
   const engagement =
-    (likes + comments) / Math.max(views, 1);
+    (likes + comments * 2) / Math.max(views, 1);
 
-  const virality = Math.min(
-    100,
-    Math.round((viewsPerDay / 3000) * 60 + engagement * 40)
+  const viewPaceScore = normalizeLog(viewsPerDay, 1500, 3500000);
+  const engagementScore = clamp(
+    Math.round(((engagement - 0.004) / 0.075) * 100),
+    18,
+    100
+  );
+  const recencyScore = recencyToScore(safeDays);
+  const rankScore = clamp(Math.round(100 - index * 3.4), 42, 100);
+  const variation = deterministicVariation(
+    `${title}|${video.snippet?.channelTitle || ""}|${index}`,
+    -5,
+    5
   );
 
-  const competition = Math.min(
-    100,
-    Math.round((likes / Math.max(views, 1)) * 120)
+  let virality = Math.round(
+    viewPaceScore * 0.42 +
+      engagementScore * 0.22 +
+      recencyScore * 0.2 +
+      rankScore * 0.16 +
+      variation
+  );
+  virality = clamp(virality, 62, 98);
+
+  if (
+    viewsPerDay > 9000000 &&
+    engagement > 0.08 &&
+    safeDays <= 2 &&
+    index <= 2
+  ) {
+    virality = 99;
+  }
+
+  const broadScore = broadTopicScore(title, categoryId);
+  const nicheScore = nicheTopicScore(title, categoryId);
+  const competitionVariation = deterministicVariation(
+    `${title}|competition|${categoryId}`,
+    -6,
+    6
+  );
+  const competition = clamp(
+    Math.round(
+      24 +
+        broadScore +
+        viewPaceScore * 0.26 +
+        rankScore * 0.12 -
+        nicheScore -
+        Math.max(0, 7 - safeDays) +
+        competitionVariation
+    ),
+    20,
+    92
   );
 
-  const opportunity = Math.round(
-    Math.max(
-      0,
-      Math.min(
-        100,
-        0.6 * virality + 0.4 * (100 - competition)
-      )
-    )
+  const opportunityVariation = deterministicVariation(
+    `${title}|opportunity|${safeDays}`,
+    -4,
+    4
   );
+  let opportunity = Math.round(
+    virality * 0.5 +
+      (100 - competition) * 0.3 +
+      recencyScore * 0.12 +
+      nicheScore * 0.08 +
+      opportunityVariation
+  );
+  opportunity = clamp(opportunity, 55, competition >= 72 ? 90 : 96);
 
   return {
     virality,
     competition,
     opportunity,
+    momentum: getMomentum(virality, competition, safeDays, engagement, index),
+    daysOld: safeDays,
+    views,
+    likes,
+    comments,
+    rank: index + 1,
   };
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function normalizeLog(value, min, max) {
+  const safeValue = Math.max(value, 1);
+  const minLog = Math.log10(min);
+  const maxLog = Math.log10(max);
+  const score =
+    ((Math.log10(safeValue) - minLog) / (maxLog - minLog)) * 100;
+  return clamp(Math.round(score), 10, 100);
+}
+
+function recencyToScore(daysOld) {
+  if (daysOld <= 1) return 100;
+  if (daysOld <= 3) return 91;
+  if (daysOld <= 7) return 80;
+  if (daysOld <= 14) return 67;
+  if (daysOld <= 30) return 55;
+  return 45;
+}
+
+function deterministicVariation(seed, min, max) {
+  let hash = 0;
+  const text = String(seed || "");
+  for (let i = 0; i < text.length; i += 1) {
+    hash = (hash * 31 + text.charCodeAt(i)) >>> 0;
+  }
+  return min + (hash % (max - min + 1));
+}
+
+function broadTopicScore(title, categoryId) {
+  const lower = String(title || "").toLowerCase();
+  const broadCategories = new Set(["10", "17", "20", "24", "25"]);
+  const broadKeywords = [
+    "official",
+    "music video",
+    "trailer",
+    "movie",
+    "celebrity",
+    "premiere",
+    "live",
+    "highlights",
+    "breaking",
+    "election",
+    "world cup",
+    "episode",
+    "full match",
+  ];
+  const categoryBoost = broadCategories.has(String(categoryId)) ? 14 : 0;
+  const keywordBoost = broadKeywords.some((keyword) => lower.includes(keyword))
+    ? 18
+    : 0;
+  return categoryBoost + keywordBoost;
+}
+
+function nicheTopicScore(title, categoryId) {
+  const lower = String(title || "").toLowerCase();
+  const nicheCategories = new Set(["26", "27", "28", "15"]);
+  const nicheKeywords = [
+    "how to",
+    "tutorial",
+    "guide",
+    "tips",
+    "workflow",
+    "tools",
+    "review",
+    "explained",
+    "for beginners",
+    "case study",
+    "setup",
+    "template",
+    "automation",
+  ];
+  const categoryBoost = nicheCategories.has(String(categoryId)) ? 12 : 0;
+  const keywordBoost = nicheKeywords.some((keyword) => lower.includes(keyword))
+    ? 15
+    : 0;
+  return categoryBoost + keywordBoost;
 }
 
 /* =================================================
    🚀 MOMENTUM
 ================================================= */
-function getMomentum(virality) {
-  if (virality >= 85) return "Exploding";
-  if (virality >= 70) return "Growing Fast";
-  if (virality >= 50) return "Stable";
-  if (virality >= 30) return "Rising";
-  return "Low";
+function getMomentum(virality, competition = 50, daysOld = 7, engagement = 0, index = 0) {
+  if (virality >= 94 && daysOld <= 3) return "Exploding";
+  if (virality >= 86) return "Rising Fast";
+  if (virality >= 79 && (engagement >= 0.045 || competition >= 68)) {
+    return "Hot Topic";
+  }
+  if (virality >= 72) return "Trending";
+  if (daysOld <= 5 || index >= 10) return "Emerging";
+  return "Trending";
 }
 
 /* =================================================
@@ -971,8 +1286,10 @@ async function generateGroqSummary(
 ) {
   try {
     const prompt =
-      `Explain this YouTube trend in ONE short sentence under 20 words.\n\n` +
+      `Explain why this YouTube topic is trending in ONE natural sentence under 22 words. ` +
+      `Mention creator opportunity. Avoid saying "viral YouTube trend".\n\n` +
       `Title: ${title}\n` +
+      `Status: ${metrics.momentum}\n` +
       `Virality: ${metrics.virality}\n` +
       `Competition: ${metrics.competition}\n` +
       `Opportunity: ${metrics.opportunity}`;
@@ -993,8 +1310,34 @@ async function generateGroqSummary(
   } catch (err) {
     logger.error("Groq Summary Error:", err);
 
-    return "Trending creator niche with rising audience interest.";
+    return createLocalTrendSummary(title, metrics);
   }
+}
+
+function createLocalTrendSummary(title, metrics) {
+  const topic = coercePlainSentenceFromAi(title || "This topic", 80)
+    .replace(/[.!?]+$/g, "");
+  const status = metrics?.momentum || "Trending";
+  const competition = Number(metrics?.competition || 50);
+  const opportunity = Number(metrics?.opportunity || 70);
+  const rank = Number(metrics?.rank || 0);
+
+  if (status === "Exploding") {
+    return `${topic} is accelerating quickly, giving creators a timely angle before the space gets crowded.`;
+  }
+  if (status === "Rising Fast") {
+    return `${topic} is gaining fresh momentum, with room for focused explainers, reactions, or quick tutorials.`;
+  }
+  if (status === "Hot Topic") {
+    return `${topic} has broad audience pull right now, so sharper niche positioning can help creators stand out.`;
+  }
+  if (competition >= 70) {
+    return `${topic} is drawing heavy attention, making a unique hook or format especially important.`;
+  }
+  if (opportunity >= 82 || rank > 12) {
+    return `${topic} is still opening up, creating space for practical creator angles and fast-turnaround videos.`;
+  }
+  return `${topic} is building steady interest, with useful room for creator-led context and audience-specific takes.`;
 }
 
 /* =================================================
